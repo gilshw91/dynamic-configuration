@@ -46054,7 +46054,7 @@ PopupDialog.propTypes = {
   open: _propTypes.default.bool.isRequired,
   onClose: _propTypes.default.func.isRequired,
   onSaveClicked: _propTypes.default.func.isRequired,
-  title: _propTypes.default.string.isRequired,
+  title: _propTypes.default.string,
   children: _propTypes.default.object
 };
 var _default = PopupDialog;
@@ -48775,7 +48775,8 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var RenderUI = function RenderUI(_ref) {
-  var uiObject = _ref.uiObject,
+  var mothedsData = _ref.mothedsData,
+      uiObject = _ref.uiObject,
       fetchResponse = _ref.fetchResponse,
       onUiInputChange = _ref.onUiInputChange,
       editDeleteButtons = _ref.editDeleteButtons,
@@ -48800,6 +48801,8 @@ var RenderUI = function RenderUI(_ref) {
       errors = uiObject.errors;
   var isPutInService = editDeleteButtons.isPutInService,
       isDeleteInService = editDeleteButtons.isDeleteInService;
+  var methodName = mothedsData.methodName,
+      currentServiceEndpoints = mothedsData.currentServiceEndpoints;
   var displayPostButtons = displayPostOptionsArray === null || displayPostOptionsArray === void 0 ? void 0 : displayPostOptionsArray.map(function (opt, index) {
     return /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
       key: opt,
@@ -48868,7 +48871,7 @@ var RenderUI = function RenderUI(_ref) {
             key: "".concat(c, "_").concat(idx)
           }, r[c]);
       }
-    }), (isPutInService || isDeleteInService) && /*#__PURE__*/_react.default.createElement("td", {
+    }), ((isPutInService === null || isPutInService === void 0 ? void 0 : isPutInService.length) > 0 || (isDeleteInService === null || isDeleteInService === void 0 ? void 0 : isDeleteInService.length) > 0) && /*#__PURE__*/_react.default.createElement("td", {
       className: "actions-buttons-wrapper"
     }, (isPutInService === null || isPutInService === void 0 ? void 0 : isPutInService.length) > 0 && /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
       variant: "warning",
@@ -48915,14 +48918,16 @@ var RenderUI = function RenderUI(_ref) {
     return /*#__PURE__*/_react.default.createElement("th", {
       key: column
     }, (0, _utils.capitalize)(column));
-  }), isPutInService || isDeleteInService ? /*#__PURE__*/_react.default.createElement("th", {
+  }), ((isPutInService === null || isPutInService === void 0 ? void 0 : isPutInService.length) > 0 || (isDeleteInService === null || isDeleteInService === void 0 ? void 0 : isDeleteInService.length) > 0) && /*#__PURE__*/_react.default.createElement("th", {
     key: "action"
-  }, "Actions") : null)), /*#__PURE__*/_react.default.createElement("tbody", null, tableData))) : /*#__PURE__*/_react.default.createElement("p", null, /*#__PURE__*/_react.default.createElement("i", null, "No records to show"))));
+  }, "Actions"))), /*#__PURE__*/_react.default.createElement("tbody", null, tableData))) : methodName && methodName === "get" || currentServiceEndpoints && currentServiceEndpoints[0][1].get ? !tableData || tableData.length === 0 ? /*#__PURE__*/_react.default.createElement("p", null, /*#__PURE__*/_react.default.createElement("i", null, "No records to show")) : null : null));
 };
 
 RenderUI.propTypes = {
   currentService: _propTypes.default.string.isRequired,
   openPopupDialog: _propTypes.default.bool.isRequired,
+  openDeletePopupDialog: _propTypes.default.bool.isRequired,
+  mothedsData: _propTypes.default.object.isRequired,
   uiObject: _propTypes.default.object.isRequired,
   editDeleteButtons: _propTypes.default.object.isRequired,
   fetchResponse: _propTypes.default.object.isRequired,
@@ -48931,7 +48936,9 @@ RenderUI.propTypes = {
   onSubmit: _propTypes.default.func.isRequired,
   onEditClicked: _propTypes.default.func.isRequired,
   onDeleteClicked: _propTypes.default.func.isRequired,
-  onTogglePopupDialog: _propTypes.default.func.isRequired
+  onTogglePopupDialog: _propTypes.default.func.isRequired,
+  closeOpenDeletePopUpDialog: _propTypes.default.func.isRequired,
+  onDeleteConfirmed: _propTypes.default.func.isRequired
 };
 var _default = RenderUI;
 exports.default = _default;
@@ -51868,7 +51875,12 @@ var MainComponent = function MainComponent(_ref) {
     isPutInService: isPutInService,
     isDeleteInService: isDeleteInService
   };
+  var mothedsData = {
+    methodName: methodName,
+    currentServiceEndpoints: currentServiceEndpoints
+  };
   return /*#__PURE__*/_react.default.createElement(_RenderUI.default, {
+    mothedsData: mothedsData,
     uiObject: uiObject,
     currentService: currentPath,
     editDeleteButtons: editDeleteButtons,
@@ -52798,7 +52810,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54055" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58857" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

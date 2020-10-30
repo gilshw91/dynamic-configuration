@@ -12,6 +12,7 @@ import { capitalize, getObjectType } from "../utils";
 import "./RenderUI.css";
 
 const RenderUI = ({
+  mothedsData,
   uiObject,
   fetchResponse,
   onUiInputChange,
@@ -37,6 +38,8 @@ const RenderUI = ({
     errors,
   } = uiObject;
   const { isPutInService, isDeleteInService } = editDeleteButtons;
+
+  const { methodName, currentServiceEndpoints } = mothedsData;
 
   const displayPostButtons = displayPostOptionsArray?.map((opt, index) => (
     <Button
@@ -101,7 +104,7 @@ const RenderUI = ({
               return <td key={`${c}_${idx}`}>{r[c]}</td>;
           }
         })}
-        {(isPutInService || isDeleteInService) && (
+        {(isPutInService?.length > 0 || isDeleteInService?.length > 0) && (
           <td className="actions-buttons-wrapper">
             {isPutInService?.length > 0 && (
               <Button variant="warning" onClick={() => onEditClicked(idx)}>
@@ -162,19 +165,23 @@ const RenderUI = ({
                   {tableColumns.map((column) => (
                     <th key={column}>{capitalize(column)}</th>
                   ))}
-                  {isPutInService || isDeleteInService ? (
+                  {(isPutInService?.length > 0 ||
+                    isDeleteInService?.length > 0) && (
                     <th key="action">Actions</th>
-                  ) : null}
+                  )}
                 </tr>
               </thead>
               <tbody>{tableData}</tbody>
             </Table>
           </Fragment>
-        ) : (
-          <p>
-            <i>No records to show</i>
-          </p>
-        )}
+        ) : (methodName && methodName === "get") ||
+          (currentServiceEndpoints && currentServiceEndpoints[0][1].get) ? (
+          !tableData || tableData.length === 0 ? (
+            <p>
+              <i>No records to show</i>
+            </p>
+          ) : null
+        ) : null}
       </div>
     </Fragment>
   );
@@ -183,6 +190,8 @@ const RenderUI = ({
 RenderUI.propTypes = {
   currentService: PropTypes.string.isRequired,
   openPopupDialog: PropTypes.bool.isRequired,
+  openDeletePopupDialog: PropTypes.bool.isRequired,
+  mothedsData: PropTypes.object.isRequired,
   uiObject: PropTypes.object.isRequired,
   editDeleteButtons: PropTypes.object.isRequired,
   fetchResponse: PropTypes.object.isRequired,
@@ -192,6 +201,8 @@ RenderUI.propTypes = {
   onEditClicked: PropTypes.func.isRequired,
   onDeleteClicked: PropTypes.func.isRequired,
   onTogglePopupDialog: PropTypes.func.isRequired,
+  closeOpenDeletePopUpDialog: PropTypes.func.isRequired,
+  onDeleteConfirmed: PropTypes.func.isRequired,
 };
 
 export default RenderUI;

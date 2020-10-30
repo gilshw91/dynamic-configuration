@@ -671,8 +671,14 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     isDeleteInService,
   };
 
+  const mothedsData = {
+    methodName,
+    currentServiceEndpoints,
+  };
+
   return (
     <RenderUI
+      mothedsData={mothedsData}
       uiObject={uiObject}
       currentService={currentPath}
       editDeleteButtons={editDeleteButtons}
