@@ -1,0 +1,17 @@
+.generated-app-header {
+  background-color: #bac7d9;
+  padding: 16px;
+}
+
+table {
+  table-layout: fixed;
+}
+
+td {
+  word-wrap: break-word;
+}
+
+.post-buttons-wrapper button {
+  margin-right: 8px;
+  margin-bottom: 16px;
+}
