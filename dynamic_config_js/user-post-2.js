@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MainComponent from "./MainComponent";
-//import TestComponent from "./TestComponent";
 import openApiJson from "./openApiJson";
 
-const tagName = "pet$findByStatus-1";
+const tagName = "user-post-2";
 const domContainer = document.getElementById(tagName);
 const elementValue = document.getElementById(tagName).childNodes[0].wholeText;
 

@@ -132,8 +132,17 @@ const RenderUI = ({
       >
         <Form>
           {formInModal}
-          {Object.keys(errors).length > 0 && (
-            <p style={{ color: "red" }}>Please fill all fields correctly</p>
+          {errors && Object.keys(errors).length > 0 && (
+            <>
+              <p style={{ color: "red" }}>The following fields are required:</p>
+              <ul>
+                {Object.keys(errors).map((e) => (
+                  <li key={e} style={{ color: "red" }}>
+                    {capitalize(e)}
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </Form>
       </PopupDialog>
@@ -146,43 +155,43 @@ const RenderUI = ({
         <Form>{"Are you sure you want to delete this item?"}</Form>
       </PopupDialog>
       <ToastContainer autoClose={3000} />
-      <div className="container p-4">
-        <div className="post-buttons-wrapper">{displayPostButtons}</div>
-        <Form className="row">{displayFiltersInputs}</Form>
-        {loading ? (
-          <div>Loading...</div>
-        ) : error ? (
-          <div>Error: {error}</div>
-        ) : tableData && tableData.length > 0 ? (
-          <Fragment>
-            <br />
-            <h4>
-              {currentService} <Badge variant="secondary">{data.length}</Badge>
-            </h4>
-            <Table striped bordered hover variant="dark">
-              <thead>
-                <tr>
-                  {tableColumns.map((column) => (
-                    <th key={column}>{capitalize(column)}</th>
-                  ))}
-                  {(isPutInService?.length > 0 ||
-                    isDeleteInService?.length > 0) && (
-                    <th key="action">Actions</th>
-                  )}
-                </tr>
-              </thead>
-              <tbody>{tableData}</tbody>
-            </Table>
-          </Fragment>
-        ) : (methodName && methodName === "get") ||
-          (currentServiceEndpoints && currentServiceEndpoints[0][1].get) ? (
-          !tableData || tableData.length === 0 ? (
-            <p>
-              <i>No records to show</i>
-            </p>
-          ) : null
-        ) : null}
-      </div>
+      {/* <div className="container p-4"> */}
+      <div className="post-buttons-wrapper">{displayPostButtons}</div>
+      <Form className="row">{displayFiltersInputs}</Form>
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error: {error}</div>
+      ) : tableData && tableData.length > 0 ? (
+        <Fragment>
+          <br />
+          <h4>
+            {currentService} <Badge variant="secondary">{data.length}</Badge>
+          </h4>
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                {tableColumns.map((column) => (
+                  <th key={column}>{capitalize(column)}</th>
+                ))}
+                {(isPutInService?.length > 0 ||
+                  isDeleteInService?.length > 0) && (
+                  <th key="action">Actions</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>{tableData}</tbody>
+          </Table>
+        </Fragment>
+      ) : (methodName && methodName === "get") ||
+        (currentServiceEndpoints && currentServiceEndpoints[0][1].get) ? (
+        !tableData || tableData.length === 0 ? (
+          <p>
+            <i>No records to show</i>
+          </p>
+        ) : null
+      ) : null}
+      {/* </div> */}
     </Fragment>
   );
 };

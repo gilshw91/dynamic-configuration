@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MainComponent from "./MainComponent";
-//import TestComponent from "./TestComponent";
 import openApiJson from "./openApiJson";
 
-const tagName = "pet-put-4";
+const tagName = "{{TAG-NAME-Placeholder}}";
 const domContainer = document.getElementById(tagName);
 const elementValue = document.getElementById(tagName).childNodes[0].wholeText;
 
