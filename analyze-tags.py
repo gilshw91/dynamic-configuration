@@ -17,9 +17,9 @@ import os.path
 # Global variables
 logFilePath = "analyze-tags.log"
 prefix = '@#@'
-targetHTMLFolder = "D:/workspace/dynamic-configuration/dynamic_config_html/"
-targetJSFolder = "D:/workspace/dynamic-configuration/dynamic_config_js/"
-templateFolderPath = "D:/workspace/dynamic-configuration/dynamic_config_templates/"
+targetHTMLFolder = "./dynamic_config_html/"
+targetJSFolder = "./dynamic_config_js/"
+templateFolderPath = "./dynamic_config_templates/"
 # ===================================================================
 # Function: log
 # Synopsis: Write application events to an external log file
@@ -125,19 +125,17 @@ def replaceTagInDOMElement(currentHTML, index, templateFile):
                                    lengthOfTagWithMethod]
         else:
             tagFound = currentHTML[indexOfTag:indexOfServiceEnds]
-
         methodName = tagFound.split(prefix)[-1].strip()
         if methodName is not "":
             tagName = f"{serviceName}-{methodName}"
             tagName = tagName.replace(
-                "/", "$").replace("{", "%").replace("}", "%")
+                "/", "$").replace("{", "!").replace("}", "!")
         else:
             tagName = f"{serviceName}"
             tagName = tagName.replace(
-                "/", "$").replace("{", "%").replace("}", "%")
-
+                "/", "$").replace("{", "!").replace("}", "!")
         currentHTML = currentHTML.replace(
-            tagFound, f"<div id='{tagName}-{index}'>{tagName}</div><script src='../dynamic_config_js/{tagName}-{index}.js'></script>")
+            tagFound, f"<div id='{tagName}-{index}'>'Loading...'</div><script src='../dynamic_config_js/{tagName}-{index}.js'></script>", 1)
         clonedTemplate = templateFile.replace(
             "{{TAG-NAME-Placeholder}}", f"{tagName}-{index}")
         tagName = tagName + "-" + str(index)

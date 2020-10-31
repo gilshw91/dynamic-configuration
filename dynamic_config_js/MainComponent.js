@@ -43,8 +43,8 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
   // the name of the selected path
   const currentPath = serviceName
     .replace("$", "/")
-    .replace("%", "{")
-    .replace("%", "}");
+    .replace("!", "{")
+    .replace("!", "}");
   const currentService = currentPath.split("/")[0];
   // get definitions if exists
   const definitions = openApiJson.definitions;
@@ -483,13 +483,48 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
   };
 
   const handleSubmitInModal = (data) => {
-    callApi(`${baseApiUrl}/${currentPath.toLowerCase()}`, {
+    let reqVal = currentPath;
+    if (currentPath.includes("{") && currentPath.includes("}")) {
+      const startIndex = currentPath.indexOf("{") + 1;
+      const endIndex = currentPath.indexOf("}");
+      const parameterName = currentPath.substring(startIndex, endIndex);
+      reqVal = currentPath
+        .replace("{", "")
+        .replace("}", "")
+        .replace(parameterName, data[parameterName]);
+    }
+
+    const endpoint = serviceEndpointsWithPostOption[0];
+
+    let contentType = "";
+    let reqBody = "";
+
+    switch (endpoint[1].post.consumes[0]) {
+      case "application/x-www-form-urlencoded":
+        contentType = "application/x-www-form-urlencoded";
+
+        const params = [];
+        Object.keys(data).map((property) => {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(data[property]);
+          params.push(encodedKey + "=" + encodedValue);
+        });
+
+        reqBody = params.join("&");
+        break;
+
+      default:
+        contentType = "application/json";
+        reqBody = JSON.stringify(data);
+    }
+
+    callApi(`${baseApiUrl}/${reqVal.toLowerCase()}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": contentType,
       },
-      body: JSON.stringify(data),
+      body: reqBody,
     });
 
     setOpenPopupDialog((prevState) => !prevState);

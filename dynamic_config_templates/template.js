@@ -5,13 +5,12 @@ import openApiJson from "./openApiJson";
 
 const tagName = "{{TAG-NAME-Placeholder}}";
 const domContainer = document.getElementById(tagName);
-const elementValue = document.getElementById(tagName).childNodes[0].wholeText;
 
 // Checks if there is a method name after the service name in the TAG
-const elementArray = elementValue.split("-");
+const elementArray = tagName.split("-");
 const serviceName = elementArray[0];
 const endpointName = elementArray.length > 1 ? elementArray[1] : "";
-
+console.log("serviceName:", serviceName);
 ReactDOM.render(
   <MainComponent
     serviceName={serviceName}

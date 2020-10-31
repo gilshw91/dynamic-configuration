@@ -51495,7 +51495,7 @@ var MainComponent = function MainComponent(_ref) {
   var schema = openApiJson.schemes ? openApiJson.schemes.includes("https") ? "https://" : "http://" : "http://";
   var baseApiUrl = schema + host + basePath; // the name of the selected path
 
-  var currentPath = serviceName.replace("$", "/").replace("%", "{").replace("%", "}");
+  var currentPath = serviceName.replace("$", "/").replace("!", "{").replace("!", "}");
   var currentService = currentPath.split("/")[0]; // get definitions if exists
 
   var definitions = openApiJson.definitions;
@@ -52936,7 +52936,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54296" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55095" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

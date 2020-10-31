@@ -46159,7 +46159,7 @@ var InputTag = function InputTag(_ref) {
   };
 
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: "form-group"
+    className: "form-group wrapper"
   }, /*#__PURE__*/_react.default.createElement("label", {
     htmlFor: name
   }, label), /*#__PURE__*/_react.default.createElement("div", {
@@ -49043,7 +49043,7 @@ var RenderUI = function RenderUI(_ref) {
     autoClose: 3000
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "post-buttons-wrapper"
-  }, displayPostButtons), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form, {
+  }, displayPostButtons), /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, displayFiltersInputs), loading ? /*#__PURE__*/_react.default.createElement("div", null, "Loading...") : error ? /*#__PURE__*/_react.default.createElement("div", null, "Error: ", error) : tableData && tableData.length > 0 ? /*#__PURE__*/_react.default.createElement(_react.Fragment, null, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h4", null, currentService, " ", /*#__PURE__*/_react.default.createElement(_reactBootstrap.Badge, {
     variant: "secondary"
@@ -51495,7 +51495,7 @@ var MainComponent = function MainComponent(_ref) {
   var schema = openApiJson.schemes ? openApiJson.schemes.includes("https") ? "https://" : "http://" : "http://";
   var baseApiUrl = schema + host + basePath; // the name of the selected path
 
-  var currentPath = serviceName.replace("$", "/").replace("%", "{").replace("%", "}");
+  var currentPath = serviceName.replace("$", "/").replace("!", "{").replace("!", "}");
   var currentService = currentPath.split("/")[0]; // get definitions if exists
 
   var definitions = openApiJson.definitions;
@@ -51511,13 +51511,7 @@ var MainComponent = function MainComponent(_ref) {
 
   var currentServiceEndpoints = endpoints.filter(function (ep) {
     return ep[0].toLowerCase() === "/" + currentPath.toLowerCase();
-  }); //TODO: is this if is nessecary?
-  // if (methodName) {
-  //   const currentServiceMethodName = currentServiceEndpoints.filter((ep) =>
-  //     Object.keys(ep[1]).includes(methodName)
-  //   );
-  // }
-  // gets all endpoints with 'get' method
+  }); // gets all endpoints with 'get' method
 
   var serviceEndpointsWithGetOption = currentServiceEndpoints.filter(function (ep) {
     return Object.keys(ep[1]).includes("get");
@@ -51536,8 +51530,7 @@ var MainComponent = function MainComponent(_ref) {
   } // Assuming that each service has only oine "delete" method
   )[0];
   serviceEndpointsWithGetOption && serviceEndpointsWithGetOption.forEach(function (ep) {
-    //TODO: improve this 'if'
-    // this if is to handle the case of the definitions of the endpoint is in a $ref of a service
+    // this 'if' is to handle the case of the definitions of the endpoint is in a $ref of a service
     if (openApiJson.paths[ep[0]].get.responses && openApiJson.paths[ep[0]].get.responses[200] && openApiJson.paths[ep[0]].get.responses[200].schema && openApiJson.paths[ep[0]].get.responses[200].schema.$ref) {
       var refOfDefintion = openApiJson.paths[ep[0]].get.responses[200].schema.$ref.replace("#/definitions/", "");
       tableColumns = Object.keys(definitions[refOfDefintion].properties);
@@ -51568,8 +51561,7 @@ var MainComponent = function MainComponent(_ref) {
         refInSwagger = optionData[1][method].parameters[0].schema.$ref;
       }
 
-      var ref = refInSwagger.replace("#/definitions", "") //TODO: need to fix this hadle with the definition?
-      .replace("/", "");
+      var ref = refInSwagger.replace("#/definitions", "").replace("/", "");
       var fullRef = openApiJson.definitions[ref];
       var refProperties = Object.keys(fullRef.properties);
       var inputUiInModal;
@@ -51621,7 +51613,6 @@ var MainComponent = function MainComponent(_ref) {
 
           case "string":
             // if there is a list of options:
-            //TODO: handle with string, date-time like in store/order endpoint
             if (fullRef.properties[field].enum) {
               inputUiInModal = [];
               fullRef.properties[field].enum.forEach(function (item) {
@@ -51676,7 +51667,7 @@ var MainComponent = function MainComponent(_ref) {
               value: Boolean(true)
             }, "True")];
             break;
-          // type undefined due to field has $ref
+          // type undefined due to if the field has '$ref'
 
           default:
             var fieldsOfObject;
@@ -51684,8 +51675,7 @@ var MainComponent = function MainComponent(_ref) {
             if (fullRef.properties[field]["$ref"]) {
               var _tempRef = fullRef.properties[field].$ref.replace("#/definitions", "").replace("/", "");
 
-              fieldsOfObject = openApiJson.definitions[_tempRef]; //TODO: map all keys
-
+              fieldsOfObject = openApiJson.definitions[_tempRef];
               inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
                 key: field,
                 as: _reactBootstrap.Col,
@@ -51703,13 +51693,12 @@ var MainComponent = function MainComponent(_ref) {
                   placeholder: (0, _utils.capitalize)(field) + "-" + (0, _utils.capitalize)(subField),
                   ref: register({
                     required: "Required"
-                  }) // separate betwwen the post and the put methods.
+                  }) // separate between the 'post' and the 'put' methods.
                   ,
                   defaultValue: Object.keys(initialValues).length > 0 ? initialValues[field] ? initialValues[field][subField] : null : null
                 });
               }));
             } else {
-              //TODO: doesnt work for all cases
               inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
                 type: "text",
                 name: field,
@@ -51820,6 +51809,7 @@ var MainComponent = function MainComponent(_ref) {
   };
 
   var handleDeleteClicked = function handleDeleteClicked(index) {
+    // gets the index of the row to delete, display a confirmation popup and deletes the item
     var row = tableDataArray[index];
     var identifier = Object.keys(row)[0];
     var reqPath = isDeleteInService[0];
@@ -51832,9 +51822,9 @@ var MainComponent = function MainComponent(_ref) {
     callApi("".concat(baseApiUrl).concat(reqPathToSend), {
       method: "DELETE"
     }).then(function () {
-      (0, _toastify.notifyDelete)(); // reset the table
+      (0, _toastify.notifyDelete)(); // reset the main table
 
-      callApi(null); // reset all filters value
+      callApi(null); // reset all filters values
 
       var newDisplayFilters = _toConsumableArray(displayFilters);
 
@@ -51851,26 +51841,50 @@ var MainComponent = function MainComponent(_ref) {
   };
 
   var handleSubmitInModal = function handleSubmitInModal(data) {
-    callApi("".concat(baseApiUrl, "/").concat(currentPath.toLowerCase()), {
+    var reqVal = currentPath;
+
+    if (currentPath.includes("{") && currentPath.includes("}")) {
+      var startIndex = currentPath.indexOf("{") + 1;
+      var endIndex = currentPath.indexOf("}");
+      var parameterName = currentPath.substring(startIndex, endIndex);
+      reqVal = currentPath.replace("{", "").replace("}", "").replace(parameterName, data[parameterName]);
+    }
+
+    var endpoint = serviceEndpointsWithPostOption[0];
+    var contentType = "";
+    var reqBody = "";
+
+    switch (endpoint[1].post.consumes[0]) {
+      case "application/x-www-form-urlencoded":
+        contentType = "application/x-www-form-urlencoded";
+        var params = [];
+        Object.keys(data).map(function (property) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(data[property]);
+          params.push(encodedKey + "=" + encodedValue);
+        });
+        reqBody = params.join("&");
+        break;
+
+      default:
+        contentType = "application/json";
+        reqBody = JSON.stringify(data);
+    }
+
+    callApi("".concat(baseApiUrl, "/").concat(reqVal.toLowerCase()), {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": contentType
       },
-      body: JSON.stringify(data)
+      body: reqBody
     });
     setOpenPopupDialog(function (prevState) {
       return !prevState;
     });
     (0, _toastify.notifySubmit)();
     console.log("post completed");
-  }; // TODO: be able to change the title of the modal
-
-
-  var handlePostOptionClicked = function handlePostOptionClicked(indexOfOption) {
-    var optionData = serviceEndpointsWithPostOption[indexOfOption];
-    extractFieldsFromDefinitions(optionData);
-  }; // handle on changing input in the filters
+  }; // handle changing input in the filters
 
 
   var handleInputChange = function handleInputChange(e) {
@@ -51898,7 +51912,7 @@ var MainComponent = function MainComponent(_ref) {
       }
     }
 
-    setDisplayFilters(newDisplayFilters); // handle the case which has no value inserted- reset response
+    setDisplayFilters(newDisplayFilters); // handle the case that has no value inserted by reset response
 
     if (!value) {
       callApi(null);
@@ -51906,7 +51920,7 @@ var MainComponent = function MainComponent(_ref) {
     } // handle and get the data by the inserted value
 
 
-    var endpoint = serviceEndpointsWithGetOption[currentInputIndex]; //TODO: problem when typing id in "store"
+    var endpoint = serviceEndpointsWithGetOption[currentInputIndex];
 
     switch (endpoint[1].get.parameters[0].in) {
       case "query":
@@ -51918,7 +51932,6 @@ var MainComponent = function MainComponent(_ref) {
         var reqUrl = endpoint[0].replace(inputVarName, value).replace("{", "").replace("}", "");
         callApi("".concat(baseApiUrl).concat(reqUrl));
         break;
-      //TODO: alert if the case is the default
 
       default:
         break;
@@ -51992,7 +52005,6 @@ var MainComponent = function MainComponent(_ref) {
       displayPostOptionsArray = null;
       isDeleteInService = null;
     } else {
-      // method = delete
       displayPostOptionsArray = null;
       isPutInService = null;
     }
@@ -52909,10 +52921,9 @@ var _openApiJson = _interopRequireDefault(require("./openApiJson"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var tagName = "user-post-2";
-var domContainer = document.getElementById(tagName);
-var elementValue = document.getElementById(tagName).childNodes[0].wholeText; // Checks if there is a method name after the service name in the TAG
+var domContainer = document.getElementById(tagName); // Checks if there is a method name after the service name in the TAG
 
-var elementArray = elementValue.split("-");
+var elementArray = tagName.split("-");
 var serviceName = elementArray[0];
 var endpointName = elementArray.length > 1 ? elementArray[1] : "";
 
@@ -52949,7 +52960,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52709" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55532" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
