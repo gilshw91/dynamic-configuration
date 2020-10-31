@@ -20,7 +20,9 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
   const { register, errors, handleSubmit } = useForm();
   // control the Modal to be displayed
   const [openPopupDialog, setOpenPopupDialog] = useState(false);
+  // control to popup of the delete confirmation
   const [openDeletePopupDialog, setOpenDeletePopupDialog] = useState(false);
+  // save the index of the item to delete
   const [deleteObjectId, setDeleteObjectId] = useState(-1);
   // contain the properties of the displayed definition that will be display as the coloumns of the table
   let tableColumns = [];

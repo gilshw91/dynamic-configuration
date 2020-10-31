@@ -52760,7 +52760,7 @@ module.exports = {
     "url": "http://swagger.io"
   }
 };
-},{}],"dynamic_config_js/pet-put-3.js":[function(require,module,exports) {
+},{}],"dynamic_config_js/pet-0.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -52773,7 +52773,7 @@ var _openApiJson = _interopRequireDefault(require("./openApiJson"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var tagName = "pet-put-3";
+var tagName = "pet-0";
 var domContainer = document.getElementById(tagName);
 var elementValue = document.getElementById(tagName).childNodes[0].wholeText; // Checks if there is a method name after the service name in the TAG
 
@@ -52814,7 +52814,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49395" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50833" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -52990,5 +52990,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dynamic_config_js/pet-put-3.js"], null)
-//# sourceMappingURL=/pet-put-3.6b705dcf.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dynamic_config_js/pet-0.js"], null)
+//# sourceMappingURL=/pet-0.86d52928.js.map
