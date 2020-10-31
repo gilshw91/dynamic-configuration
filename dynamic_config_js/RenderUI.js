@@ -4,9 +4,9 @@ import { Button, Form, Table, Badge } from "react-bootstrap";
 
 import TextField from "./shared/TextField";
 import DropDownField from "./shared/DropDownField";
+import InputTag from "./shared/InputTag";
 import PopupDialog from "./shared/PopupDialog";
 import { ToastContainer } from "react-toastify";
-
 import { capitalize, getObjectType } from "../utils";
 
 import "./RenderUI.css";
@@ -58,6 +58,18 @@ const RenderUI = ({
     const value = f.value;
 
     if (type === "array") {
+      if (options.length === 0) {
+        return (
+          <InputTag
+            key={`${name}_${index}`}
+            label={capitalize(name)}
+            name={name}
+            placeHolder={"Add " + capitalize(name)}
+            value={value ? value : []}
+            onChange={(e) => onUiInputChange(e)}
+          />
+        );
+      }
       return (
         <div key={`${name}_${index}`} className="col">
           <DropDownField
@@ -151,13 +163,14 @@ const RenderUI = ({
         onClose={closeOpenDeletePopUpDialog}
         onSaveClicked={onDeleteConfirmed}
         title={"Delete"}
+        buttonName={"Delete"}
       >
         <Form>{"Are you sure you want to delete this item?"}</Form>
       </PopupDialog>
       <ToastContainer autoClose={3000} />
       {/* <div className="container p-4"> */}
       <div className="post-buttons-wrapper">{displayPostButtons}</div>
-      <Form className="row">{displayFiltersInputs}</Form>
+      <div className="row">{displayFiltersInputs}</div>
       {loading ? (
         <div>Loading...</div>
       ) : error ? (

@@ -63,13 +63,6 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     (ep) => ep[0].toLowerCase() === "/" + currentPath.toLowerCase()
   );
 
-  //TODO: is this if is nessecary?
-  // if (methodName) {
-  //   const currentServiceMethodName = currentServiceEndpoints.filter((ep) =>
-  //     Object.keys(ep[1]).includes(methodName)
-  //   );
-  // }
-
   // gets all endpoints with 'get' method
   let serviceEndpointsWithGetOption = currentServiceEndpoints.filter((ep) =>
     Object.keys(ep[1]).includes("get")
@@ -90,8 +83,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
 
   serviceEndpointsWithGetOption &&
     serviceEndpointsWithGetOption.forEach((ep) => {
-      //TODO: improve this 'if'
-      // this if is to handle the case of the definitions of the endpoint is in a $ref of a service
+      // this 'if' is to handle the case of the definitions of the endpoint is in a $ref of a service
       if (
         openApiJson.paths[ep[0]].get.responses &&
         openApiJson.paths[ep[0]].get.responses[200] &&
@@ -130,9 +122,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
       } else {
         refInSwagger = optionData[1][method].parameters[0].schema.$ref;
       }
-      const ref = refInSwagger
-        .replace("#/definitions", "") //TODO: need to fix this hadle with the definition?
-        .replace("/", "");
+      const ref = refInSwagger.replace("#/definitions", "").replace("/", "");
 
       const fullRef = openApiJson.definitions[ref];
       const refProperties = Object.keys(fullRef.properties);
@@ -213,7 +203,6 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
 
             case "string":
               // if there is a list of options:
-              //TODO: handle with string, date-time like in store/order endpoint
               if (fullRef.properties[field].enum) {
                 inputUiInModal = [];
                 fullRef.properties[field].enum.forEach((item) => {
@@ -274,7 +263,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
                 </option>,
               ];
               break;
-            // type undefined due to field has $ref
+            // type undefined due to if the field has '$ref'
             default:
               let fieldsOfObject;
               if (fullRef.properties[field]["$ref"]) {
@@ -283,7 +272,6 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
                   .replace("/", "");
                 fieldsOfObject = openApiJson.definitions[tempRef];
 
-                //TODO: map all keys
                 inputUiInModal = (
                   <Form.Group
                     key={field}
@@ -311,7 +299,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
                           ref={register({
                             required: "Required",
                           })}
-                          // separate betwwen the post and the put methods.
+                          // separate between the 'post' and the 'put' methods.
                           defaultValue={
                             Object.keys(initialValues).length > 0
                               ? initialValues[field]
@@ -325,7 +313,6 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
                   </Form.Group>
                 );
               } else {
-                //TODO: doesnt work for all cases
                 inputUiInModal = (
                   <Form.Control
                     type="text"
@@ -463,6 +450,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
   };
 
   const handleDeleteClicked = (index) => {
+    // gets the index of the row to delete, display a confirmation popup and deletes the item
     const row = tableDataArray[index];
     const identifier = Object.keys(row)[0];
     const reqPath = isDeleteInService[0];
@@ -477,10 +465,10 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     callApi(`${baseApiUrl}${reqPathToSend}`, { method: "DELETE" }).then(() => {
       notifyDelete();
 
-      // reset the table
+      // reset the main table
       callApi(null);
 
-      // reset all filters value
+      // reset all filters values
       let newDisplayFilters = [...displayFilters];
       let i;
       for (i = 0; i < newDisplayFilters.length; i++) {
@@ -509,13 +497,12 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     console.log("post completed");
   };
 
-  // TODO: be able to change the title of the modal
   const handlePostOptionClicked = (indexOfOption) => {
     const optionData = serviceEndpointsWithPostOption[indexOfOption];
     extractFieldsFromDefinitions(optionData);
   };
 
-  // handle on changing input in the filters
+  // handle changing input in the filters
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -539,19 +526,19 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     }
 
     setDisplayFilters(newDisplayFilters);
-    // handle the case which has no value inserted- reset response
+    // handle the case that has no value inserted by reset response
     if (!value) {
       callApi(null);
       return;
     }
     // handle and get the data by the inserted value
     const endpoint = serviceEndpointsWithGetOption[currentInputIndex];
-    //TODO: problem when typing id in "store"
 
     switch (endpoint[1].get.parameters[0].in) {
       case "query":
         callApi(`${baseApiUrl}${endpoint[0]}?${name}=${value}`);
         break;
+
       case "path":
         const inputVarName = endpoint[1].get.parameters[0].name;
         const reqUrl = endpoint[0]
@@ -560,7 +547,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
           .replace("}", "");
         callApi(`${baseApiUrl}${reqUrl}`);
         break;
-      //TODO: alert if the case is the default
+
       default:
         break;
     }
@@ -648,7 +635,6 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
       displayPostOptionsArray = null;
       isDeleteInService = null;
     } else {
-      // method = delete
       displayPostOptionsArray = null;
       isPutInService = null;
     }

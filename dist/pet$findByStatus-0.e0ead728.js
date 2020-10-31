@@ -46015,7 +46015,189 @@ DropDownField.propTypes = {
 };
 var _default = DropDownField;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","../../utils":"utils.js","react-bootstrap/Form":"node_modules/react-bootstrap/esm/Form.js"}],"dynamic_config_js/shared/PopupDialog.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","../../utils":"utils.js","react-bootstrap/Form":"node_modules/react-bootstrap/esm/Form.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"dynamic_config_js/shared/InputTag.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"dynamic_config_js/shared/InputTag.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+require("./InputTag.css");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var InputTag = function InputTag(_ref) {
+  var label = _ref.label,
+      name = _ref.name,
+      placeHolder = _ref.placeHolder,
+      value = _ref.value,
+      onChange = _ref.onChange;
+  var tags = value;
+  var tagInput = null;
+
+  var removeTag = function removeTag(i) {
+    var newTags = _toConsumableArray(tags);
+
+    newTags.splice(i, 1);
+    onChange({
+      target: {
+        value: newTags.length > 0 ? [newTags] : [],
+        name: name
+      }
+    });
+  };
+
+  var inputKeyDown = function inputKeyDown(e) {
+    var val = e.target.value;
+
+    if (e.key === "Enter" && val) {
+      if (tags.find(function (tag) {
+        return tag.toLowerCase() === val.toLowerCase();
+      })) {
+        return;
+      }
+
+      tagInput.value = null;
+      onChange({
+        target: {
+          value: [].concat(_toConsumableArray(tags), [val]),
+          name: name
+        }
+      });
+    } else if (e.key === "Backspace" && !val) {
+      removeTag(tags.length - 1);
+    }
+  };
+
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "form-group wrapper"
+  }, /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: name
+  }, label), /*#__PURE__*/_react.default.createElement("div", {
+    className: "input-tag"
+  }, /*#__PURE__*/_react.default.createElement("ul", {
+    name: name,
+    className: "input-tag__tags"
+  }, tags.map(function (tag, i) {
+    return /*#__PURE__*/_react.default.createElement("li", {
+      key: tag
+    }, tag, /*#__PURE__*/_react.default.createElement("button", {
+      type: "button",
+      onClick: function onClick() {
+        removeTag(i);
+      }
+    }, "+"));
+  }), /*#__PURE__*/_react.default.createElement("li", {
+    className: "input-tag__tags__input"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    placeholder: placeHolder,
+    onKeyDown: inputKeyDown,
+    ref: function ref(c) {
+      tagInput = c;
+    }
+  })))));
+};
+
+InputTag.propTypes = {
+  label: _propTypes.default.string.isRequired,
+  name: _propTypes.default.string.isRequired,
+  placeHolder: _propTypes.default.string,
+  value: _propTypes.default.array.isRequired,
+  onChange: _propTypes.default.func.isRequired
+};
+var _default = InputTag;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","./InputTag.css":"dynamic_config_js/shared/InputTag.css"}],"dynamic_config_js/shared/PopupDialog.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46036,6 +46218,7 @@ var PopupDialog = function PopupDialog(_ref) {
       onClose = _ref.onClose,
       onSaveClicked = _ref.onSaveClicked,
       title = _ref.title,
+      buttonName = _ref.buttonName,
       children = _ref.children;
   return /*#__PURE__*/_react.default.createElement(_reactBootstrap.Modal, {
     show: open,
@@ -46047,7 +46230,7 @@ var PopupDialog = function PopupDialog(_ref) {
     onClick: onClose
   }, "Close"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
     onClick: onSaveClicked
-  }, "Save Changes")));
+  }, buttonName ? buttonName : "Save Changes")));
 };
 
 PopupDialog.propTypes = {
@@ -46055,6 +46238,7 @@ PopupDialog.propTypes = {
   onClose: _propTypes.default.func.isRequired,
   onSaveClicked: _propTypes.default.func.isRequired,
   title: _propTypes.default.string,
+  buttonName: _propTypes.default.string,
   children: _propTypes.default.object
 };
 var _default = PopupDialog;
@@ -48670,74 +48854,7 @@ eventManager.on(2
     document.body.removeChild(containerDomNode);
   }
 });
-},{"react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","classnames":"node_modules/classnames/index.js","prop-types":"node_modules/prop-types/index.js","react-dom":"node_modules/react-dom/index.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"dynamic_config_js/RenderUI.css":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","classnames":"node_modules/classnames/index.js","prop-types":"node_modules/prop-types/index.js","react-dom":"node_modules/react-dom/index.js"}],"dynamic_config_js/RenderUI.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -48759,6 +48876,8 @@ var _reactBootstrap = require("react-bootstrap");
 var _TextField = _interopRequireDefault(require("./shared/TextField"));
 
 var _DropDownField = _interopRequireDefault(require("./shared/DropDownField"));
+
+var _InputTag = _interopRequireDefault(require("./shared/InputTag"));
 
 var _PopupDialog = _interopRequireDefault(require("./shared/PopupDialog"));
 
@@ -48818,6 +48937,19 @@ var RenderUI = function RenderUI(_ref) {
     var value = f.value;
 
     if (type === "array") {
+      if (options.length === 0) {
+        return /*#__PURE__*/_react.default.createElement(_InputTag.default, {
+          key: "".concat(name, "_").concat(index),
+          label: (0, _utils.capitalize)(name),
+          name: name,
+          placeHolder: "Add " + (0, _utils.capitalize)(name),
+          value: value ? value : [],
+          onChange: function onChange(e) {
+            return onUiInputChange(e);
+          }
+        });
+      }
+
       return /*#__PURE__*/_react.default.createElement("div", {
         key: "".concat(name, "_").concat(index),
         className: "col"
@@ -48905,12 +49037,13 @@ var RenderUI = function RenderUI(_ref) {
     open: openDeletePopupDialog,
     onClose: closeOpenDeletePopUpDialog,
     onSaveClicked: onDeleteConfirmed,
-    title: "Delete"
+    title: "Delete",
+    buttonName: "Delete"
   }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form, null, "Are you sure you want to delete this item?")), /*#__PURE__*/_react.default.createElement(_reactToastify.ToastContainer, {
     autoClose: 3000
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "post-buttons-wrapper"
-  }, displayPostButtons), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form, {
+  }, displayPostButtons), /*#__PURE__*/_react.default.createElement("div", {
     className: "row"
   }, displayFiltersInputs), loading ? /*#__PURE__*/_react.default.createElement("div", null, "Loading...") : error ? /*#__PURE__*/_react.default.createElement("div", null, "Error: ", error) : tableData && tableData.length > 0 ? /*#__PURE__*/_react.default.createElement(_react.Fragment, null, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h4", null, currentService, " ", /*#__PURE__*/_react.default.createElement(_reactBootstrap.Badge, {
     variant: "secondary"
@@ -48947,7 +49080,7 @@ RenderUI.propTypes = {
 };
 var _default = RenderUI;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","react-bootstrap":"node_modules/react-bootstrap/esm/index.js","./shared/TextField":"dynamic_config_js/shared/TextField.js","./shared/DropDownField":"dynamic_config_js/shared/DropDownField.js","./shared/PopupDialog":"dynamic_config_js/shared/PopupDialog.js","react-toastify":"node_modules/react-toastify/dist/react-toastify.esm.js","../utils":"utils.js","./RenderUI.css":"dynamic_config_js/RenderUI.css"}],"node_modules/react-toastify/dist/ReactToastify.css":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","react-bootstrap":"node_modules/react-bootstrap/esm/index.js","./shared/TextField":"dynamic_config_js/shared/TextField.js","./shared/DropDownField":"dynamic_config_js/shared/DropDownField.js","./shared/InputTag":"dynamic_config_js/shared/InputTag.js","./shared/PopupDialog":"dynamic_config_js/shared/PopupDialog.js","react-toastify":"node_modules/react-toastify/dist/react-toastify.esm.js","../utils":"utils.js","./RenderUI.css":"dynamic_config_js/RenderUI.css"}],"node_modules/react-toastify/dist/ReactToastify.css":[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
@@ -51337,12 +51470,14 @@ var MainComponent = function MainComponent(_ref) {
   var _useState5 = (0, _react.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
       openPopupDialog = _useState6[0],
-      setOpenPopupDialog = _useState6[1];
+      setOpenPopupDialog = _useState6[1]; // control to popup of the delete confirmation
+
 
   var _useState7 = (0, _react.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
       openDeletePopupDialog = _useState8[0],
-      setOpenDeletePopupDialog = _useState8[1];
+      setOpenDeletePopupDialog = _useState8[1]; // save the index of the item to delete
+
 
   var _useState9 = (0, _react.useState)(-1),
       _useState10 = _slicedToArray(_useState9, 2),
@@ -51376,13 +51511,7 @@ var MainComponent = function MainComponent(_ref) {
 
   var currentServiceEndpoints = endpoints.filter(function (ep) {
     return ep[0].toLowerCase() === "/" + currentPath.toLowerCase();
-  }); //TODO: is this if is nessecary?
-  // if (methodName) {
-  //   const currentServiceMethodName = currentServiceEndpoints.filter((ep) =>
-  //     Object.keys(ep[1]).includes(methodName)
-  //   );
-  // }
-  // gets all endpoints with 'get' method
+  }); // gets all endpoints with 'get' method
 
   var serviceEndpointsWithGetOption = currentServiceEndpoints.filter(function (ep) {
     return Object.keys(ep[1]).includes("get");
@@ -51401,8 +51530,7 @@ var MainComponent = function MainComponent(_ref) {
   } // Assuming that each service has only oine "delete" method
   )[0];
   serviceEndpointsWithGetOption && serviceEndpointsWithGetOption.forEach(function (ep) {
-    //TODO: improve this 'if'
-    // this if is to handle the case of the definitions of the endpoint is in a $ref of a service
+    // this 'if' is to handle the case of the definitions of the endpoint is in a $ref of a service
     if (openApiJson.paths[ep[0]].get.responses && openApiJson.paths[ep[0]].get.responses[200] && openApiJson.paths[ep[0]].get.responses[200].schema && openApiJson.paths[ep[0]].get.responses[200].schema.$ref) {
       var refOfDefintion = openApiJson.paths[ep[0]].get.responses[200].schema.$ref.replace("#/definitions/", "");
       tableColumns = Object.keys(definitions[refOfDefintion].properties);
@@ -51433,8 +51561,7 @@ var MainComponent = function MainComponent(_ref) {
         refInSwagger = optionData[1][method].parameters[0].schema.$ref;
       }
 
-      var ref = refInSwagger.replace("#/definitions", "") //TODO: need to fix this hadle with the definition?
-      .replace("/", "");
+      var ref = refInSwagger.replace("#/definitions", "").replace("/", "");
       var fullRef = openApiJson.definitions[ref];
       var refProperties = Object.keys(fullRef.properties);
       var inputUiInModal;
@@ -51486,7 +51613,6 @@ var MainComponent = function MainComponent(_ref) {
 
           case "string":
             // if there is a list of options:
-            //TODO: handle with string, date-time like in store/order endpoint
             if (fullRef.properties[field].enum) {
               inputUiInModal = [];
               fullRef.properties[field].enum.forEach(function (item) {
@@ -51541,7 +51667,7 @@ var MainComponent = function MainComponent(_ref) {
               value: Boolean(true)
             }, "True")];
             break;
-          // type undefined due to field has $ref
+          // type undefined due to if the field has '$ref'
 
           default:
             var fieldsOfObject;
@@ -51549,8 +51675,7 @@ var MainComponent = function MainComponent(_ref) {
             if (fullRef.properties[field]["$ref"]) {
               var _tempRef = fullRef.properties[field].$ref.replace("#/definitions", "").replace("/", "");
 
-              fieldsOfObject = openApiJson.definitions[_tempRef]; //TODO: map all keys
-
+              fieldsOfObject = openApiJson.definitions[_tempRef];
               inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
                 key: field,
                 as: _reactBootstrap.Col,
@@ -51568,13 +51693,12 @@ var MainComponent = function MainComponent(_ref) {
                   placeholder: (0, _utils.capitalize)(field) + "-" + (0, _utils.capitalize)(subField),
                   ref: register({
                     required: "Required"
-                  }) // separate betwwen the post and the put methods.
+                  }) // separate between the 'post' and the 'put' methods.
                   ,
                   defaultValue: Object.keys(initialValues).length > 0 ? initialValues[field] ? initialValues[field][subField] : null : null
                 });
               }));
             } else {
-              //TODO: doesnt work for all cases
               inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
                 type: "text",
                 name: field,
@@ -51685,6 +51809,7 @@ var MainComponent = function MainComponent(_ref) {
   };
 
   var handleDeleteClicked = function handleDeleteClicked(index) {
+    // gets the index of the row to delete, display a confirmation popup and deletes the item
     var row = tableDataArray[index];
     var identifier = Object.keys(row)[0];
     var reqPath = isDeleteInService[0];
@@ -51697,9 +51822,9 @@ var MainComponent = function MainComponent(_ref) {
     callApi("".concat(baseApiUrl).concat(reqPathToSend), {
       method: "DELETE"
     }).then(function () {
-      (0, _toastify.notifyDelete)(); // reset the table
+      (0, _toastify.notifyDelete)(); // reset the main table
 
-      callApi(null); // reset all filters value
+      callApi(null); // reset all filters values
 
       var newDisplayFilters = _toConsumableArray(displayFilters);
 
@@ -51729,13 +51854,12 @@ var MainComponent = function MainComponent(_ref) {
     });
     (0, _toastify.notifySubmit)();
     console.log("post completed");
-  }; // TODO: be able to change the title of the modal
-
+  };
 
   var handlePostOptionClicked = function handlePostOptionClicked(indexOfOption) {
     var optionData = serviceEndpointsWithPostOption[indexOfOption];
     extractFieldsFromDefinitions(optionData);
-  }; // handle on changing input in the filters
+  }; // handle changing input in the filters
 
 
   var handleInputChange = function handleInputChange(e) {
@@ -51763,7 +51887,7 @@ var MainComponent = function MainComponent(_ref) {
       }
     }
 
-    setDisplayFilters(newDisplayFilters); // handle the case which has no value inserted- reset response
+    setDisplayFilters(newDisplayFilters); // handle the case that has no value inserted by reset response
 
     if (!value) {
       callApi(null);
@@ -51771,7 +51895,7 @@ var MainComponent = function MainComponent(_ref) {
     } // handle and get the data by the inserted value
 
 
-    var endpoint = serviceEndpointsWithGetOption[currentInputIndex]; //TODO: problem when typing id in "store"
+    var endpoint = serviceEndpointsWithGetOption[currentInputIndex];
 
     switch (endpoint[1].get.parameters[0].in) {
       case "query":
@@ -51783,7 +51907,6 @@ var MainComponent = function MainComponent(_ref) {
         var reqUrl = endpoint[0].replace(inputVarName, value).replace("{", "").replace("}", "");
         callApi("".concat(baseApiUrl).concat(reqUrl));
         break;
-      //TODO: alert if the case is the default
 
       default:
         break;
@@ -51857,7 +51980,6 @@ var MainComponent = function MainComponent(_ref) {
       displayPostOptionsArray = null;
       isDeleteInService = null;
     } else {
-      // method = delete
       displayPostOptionsArray = null;
       isPutInService = null;
     }
@@ -52814,7 +52936,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49395" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54296" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

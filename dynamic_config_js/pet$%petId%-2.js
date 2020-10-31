@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import MainComponent from "./MainComponent";
 import openApiJson from "./openApiJson";
 
-const tagName = "pet-0";
+const tagName = "pet$%petId%-2";
 const domContainer = document.getElementById(tagName);
 const elementValue = document.getElementById(tagName).childNodes[0].wholeText;
 

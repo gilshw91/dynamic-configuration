@@ -2,7 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Modal } from "react-bootstrap";
 
-const PopupDialog = ({ open, onClose, onSaveClicked, title, children }) => (
+const PopupDialog = ({
+  open,
+  onClose,
+  onSaveClicked,
+  title,
+  buttonName,
+  children,
+}) => (
   <Modal show={open} onHide={onClose}>
     <Modal.Header closeButton>
       <Modal.Title>{title}</Modal.Title>
@@ -12,7 +19,9 @@ const PopupDialog = ({ open, onClose, onSaveClicked, title, children }) => (
       <Button variant="secondary" onClick={onClose}>
         Close
       </Button>
-      <Button onClick={onSaveClicked}>Save Changes</Button>
+      <Button onClick={onSaveClicked}>
+        {buttonName ? buttonName : "Save Changes"}
+      </Button>
     </Modal.Footer>
   </Modal>
 );
@@ -22,6 +31,7 @@ PopupDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSaveClicked: PropTypes.func.isRequired,
   title: PropTypes.string,
+  buttonName: PropTypes.string,
   children: PropTypes.object,
 };
 
