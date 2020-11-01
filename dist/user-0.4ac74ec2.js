@@ -51572,8 +51572,7 @@ var MainComponent = function MainComponent(_ref) {
             {
               if (fullRef.properties[field].items.type) {
                 inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
-                  type: fullRef.properties[field].items.type === "integer" ? "number" : "text" // TODO: another switch
-                  ,
+                  type: fullRef.properties[field].items.type === "integer" ? "number" : "text",
                   name: field + "[0]" // This cast the value to "array"
                   ,
                   placeholder: "Please separate by comma",
@@ -51732,8 +51731,7 @@ var MainComponent = function MainComponent(_ref) {
         switch (field.type) {
           case "array":
             inputUiInModal = /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
-              type: field.type === "string" ? "text" : "number" // TODO: another switch
-              ,
+              type: field.type === "string" ? "text" : "number",
               name: field.name + "[0]" // This cast the value to "array"
               ,
               placeholder: "Please separate by comma",
@@ -51852,7 +51850,7 @@ var MainComponent = function MainComponent(_ref) {
 
     var endpoint = serviceEndpointsWithPostOption[0];
     var contentType = "";
-    var reqBody = "";
+    var reqBody = ""; // handle with different types of content
 
     switch (endpoint[1].post.consumes[0]) {
       case "application/x-www-form-urlencoded":
@@ -52966,7 +52964,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61645" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

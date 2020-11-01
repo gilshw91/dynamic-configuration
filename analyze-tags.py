@@ -177,7 +177,6 @@ else:
     try:
         swaggerJson = open(json_path)
         swaggerJson = json.loads(swaggerJson.read())
-        # print(swaggerJson['paths'])
     except ValueError as err:
         log(f"The file '{args.json_path}' is not a valid JSON!", "error")
         exit(-1)
@@ -219,4 +218,3 @@ for root, dirs, files in os.walk(args.src_dir):
 cloneSwagger = open(targetJSFolder + "openApiJson.json", 'w')
 cloneSwagger.write(json.dumps(swaggerJson))
 cloneSwagger.close()
-# print(f"newSwagger: {json.dumps(subSwagger)}")

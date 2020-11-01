@@ -141,7 +141,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
                       fullRef.properties[field].items.type === "integer"
                         ? "number"
                         : "text"
-                    } // TODO: another switch
+                    }
                     name={field + "[0]"} // This cast the value to "array"
                     placeholder={"Please separate by comma"}
                     ref={register({
@@ -364,7 +364,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
             case "array":
               inputUiInModal = (
                 <Form.Control
-                  type={field.type === "string" ? "text" : "number"} // TODO: another switch
+                  type={field.type === "string" ? "text" : "number"}
                   name={field.name + "[0]"} // This cast the value to "array"
                   placeholder={"Please separate by comma"}
                   ref={register({
@@ -499,6 +499,7 @@ const MainComponent = ({ serviceName, methodName, openApiJson }) => {
     let contentType = "";
     let reqBody = "";
 
+    // handle with different types of content
     switch (endpoint[1].post.consumes[0]) {
       case "application/x-www-form-urlencoded":
         contentType = "application/x-www-form-urlencoded";

@@ -168,7 +168,6 @@ const RenderUI = ({
         <Form>{"Are you sure you want to delete this item?"}</Form>
       </PopupDialog>
       <ToastContainer autoClose={3000} />
-      {/* <div className="container p-4"> */}
       <div className="post-buttons-wrapper">{displayPostButtons}</div>
       <div className="row">{displayFiltersInputs}</div>
       {loading ? (
@@ -204,7 +203,6 @@ const RenderUI = ({
           </p>
         ) : null
       ) : null}
-      {/* </div> */}
     </Fragment>
   );
 };
