@@ -1,7 +1,7 @@
 # dynamic-configuration
-Dynamic UI built by JSON configuration
+DYNAMIC UI CONFIGURATION SYSTEM
 
-## This is an application that build automatically and dynamic the UI in an existing website by a provided OpenAPI.
+## A React web application that accepts OpenApi (swagger) contract and generates a scaffold UI based on its structure. The application can be placed on an existing web site and work with dynamic tags (placeholders for generated UI)
 
 
 ## To run the project you shuold run the following commands:
