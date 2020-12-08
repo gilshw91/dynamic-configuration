@@ -3,18 +3,17 @@ import ReactDOM from "react-dom";
 import MainComponent from "./MainComponent";
 import openApiJson from "./openApiJson";
 
-const tagName = "user-0";
+const tagName = "user$!username!-put-0";
 const domContainer = document.getElementById(tagName);
 
 // Checks if there is a method name after the service name in the TAG
 const elementArray = tagName.split("-");
 const serviceName = elementArray[0];
-const endpointName = elementArray.length > 1 ? elementArray[1] : "";
-console.log("serviceName:", serviceName);
+const endpointName = elementArray.length > 2 ? elementArray[1] : "";
 ReactDOM.render(
   <MainComponent
     serviceName={serviceName}
-    endpointName={endpointName}
+    methodName={endpointName}
     openApiJson={openApiJson}
   />,
   domContainer

@@ -10,7 +10,6 @@ const domContainer = document.getElementById(tagName);
 const elementArray = tagName.split("-");
 const serviceName = elementArray[0];
 const endpointName = elementArray.length > 1 ? elementArray[1] : "";
-console.log("serviceName:", serviceName);
 ReactDOM.render(
   <MainComponent
     serviceName={serviceName}

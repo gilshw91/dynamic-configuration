@@ -11,7 +11,7 @@ import os.path
 #               Component - which builds and displays UI from the swagger
 # Input: Source folder and swagger as JSON (provided as URL or as file). optional inputs are the target folder and
 #        a template folder
-# Output: Clones of the HTML files contains connection to their React component
+# Output: New HTML files contains connection to their React component, JS files and JSON file
 # Author : Gil Shwartz
 # ===================================================================
 # Global variables
@@ -100,8 +100,12 @@ def validateArgs(args):
 
 
 def replaceTagInDOMElement(currentHTML, index, templateFile):
-    """Gets HTML string and returns the first service name occur,
-    the HTML after replacing TAG with a div and the TAG which has replaced"""
+    """Gets HTML string and returns:
+     - the service name,
+     - the HTMLs' content after replacing the TAG with 'div' and 'src' elements
+     - the template (JS) file
+     - the TAG which has replaced"""
+
     serviceName = ""
     clonedTemplate = ""
     tagName = ""
@@ -113,9 +117,6 @@ def replaceTagInDOMElement(currentHTML, index, templateFile):
         # isServiceExistInJson(serviceName, JSON) --- validate if service exist
         indexOfServiceEnds = indexOfTag + \
             len(prefix) + len(serviceName) + len(prefix)
-
-        # indexOfMethodStarts = indexOfServiceEnds + len(prefix)
-
         # check if there is a method name after the final char of the tag. (alpha char and not </ or \n....)
         if currentHTML[indexOfServiceEnds].isalpha():
             # assuming that afetr the TAG will be a new line
@@ -145,6 +146,7 @@ def replaceTagInDOMElement(currentHTML, index, templateFile):
 # ===================================================================
 # Main code
 # ===================================================================
+
 # parse inputs arguments
 args = parseArgs()
 # validate arguments

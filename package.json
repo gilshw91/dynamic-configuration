@@ -1,9 +1,12 @@
 {
+  "homepage": "http://gilshw91.github.io/dynamic-configuration",
   "name": "dynamic-configuration",
   "version": "1.0.0",
   "description": "",
   "main": "index.html",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "gh-pages": "^3.1.0",
     "parcel-bundler": "^1.12.4"
   }
 }

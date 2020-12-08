@@ -52929,7 +52929,6 @@ var domContainer = document.getElementById(tagName); // Checks if there is a met
 var elementArray = tagName.split("-");
 var serviceName = elementArray[0];
 var endpointName = elementArray.length > 1 ? elementArray[1] : "";
-console.log("serviceName:", serviceName);
 
 _reactDom.default.render( /*#__PURE__*/_react.default.createElement(_MainComponent.default, {
   serviceName: serviceName,
@@ -52964,7 +52963,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61645" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52797" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -41,6 +41,7 @@ const RenderUI = ({
 
   const { methodName, currentServiceEndpoints } = mothedsData;
 
+  // map over every "post" option that provided to display as button
   const displayPostButtons = displayPostOptionsArray?.map((opt, index) => (
     <Button
       key={opt}
@@ -51,6 +52,8 @@ const RenderUI = ({
       {capitalize(opt)}
     </Button>
   ));
+
+  // map over the "get" filters provided to display due to its inputs type (dropdown list/number/text...)
   const displayFiltersInputs = displayFilters?.map((f, index) => {
     const name = f.name;
     const type = f.type ? f.type : "text";
@@ -96,6 +99,7 @@ const RenderUI = ({
     }
   });
 
+  // Display the data in the table, contains edit or delete buttuns if those methods has provided
   const tableData = tableDataArray?.map((r, idx) => (
     <Fragment key={idx}>
       <tr>
