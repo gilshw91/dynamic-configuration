@@ -16,5 +16,7 @@ This project was developed using ReactJs, Bootstrap, JavaScript, Python and Swag
 
 
 ===========
-Industry project for a startup company- OptimalQ
+
+- Industry project for a startup company- OptimalQ
+
 ===========
